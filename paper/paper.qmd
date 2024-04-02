@@ -1,0 +1,47 @@
+---
+title: "Detect and predict trends in climate change"
+subtitle: ""
+author: 
+  - Dongli Sun
+thanks: "Code and data are available at: https://github.com/DongliSun/Track-climate-warming.git"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+abstract: "This paper studies the factors that cause weather changes, and through data and literature, we learn about a series of related issues such as carbon dioxide emissions, temperature changes and renewable energy use. It is clear from the data that the increase in carbon dioxide contributes to the greenhouse effect and increases the surface temperature."
+format: pdf
+number-sections: true
+bibliography: references.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+#install.packages("bookdown")
+# Set up libraries
+library(tidyverse)
+library(dplyr)
+library(tidyr)
+library(knitr)
+library(kableExtra)
+
+```
+
+# Introduction
+This paper studies climate change to discuss the temperature rise in recent years and finds that because of climate change, the phenomenon of extreme weather often appears, and the rise of sea level and the melting of glaciers have a very negative impact on local animals. In addition, climate change affects not only the living environment of animals but also human beings, and farmers are the most affected. Therefore, I will analyze the data of climate change factors and integrate them to watch their trends, predict the future development and put forward some suggestions for sustainable development.
+
+# Data
+
+## Dataset Description and Methodology
+
+## Data Visualization
+
+# Model
+
+# Results
+
+# Discussion
+
+## Weaknesses and next steps
+
+# Appendix {.unnumbered}
+
+# Model Testing
+
+# References
