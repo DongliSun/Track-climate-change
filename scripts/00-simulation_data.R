@@ -1,20 +1,30 @@
-# 加载必要的库
+#### Preamble ####
+# Purpose: Simulates the desired data.
+# Author: Dongli SUn
+# Data: 16 April 2024
+# Contact: dongli.sun@mail.utoronto.ca
+# License: MIT
+# Pre-requisites: Need to know where to get Children Vocabulary Development data.
+# Any other information needed? None.
+
+
+#### Workspace setup ####
 library(tidyverse)
 
-# 设置模拟的年份数
+# simulate the year
 years <- seq(2000, 2020)
 
-# 生成基础数据
-set.seed(123)  # 设置随机数种子以保证可重复性
+# simulate data
+set.seed(123)  
 data <- tibble(
   Year = years,
-  GreenhouseGases = rnorm(length(years), mean = 1000, sd = 50),  # 假设的总温室气体排放量
-  ForestArea = rnorm(length(years), mean = 3000, sd = 100),       # 假设的森林面积，单位千平方公里
-  PopulationDensity = rnorm(length(years), mean = 50, sd = 10)   # 假设的人口密度，单位人/平方公里
+  GreenhouseGases = rnorm(length(years), mean = 1000, sd = 50),  # Hypothetical total greenhouse gas emissions
+  ForestArea = rnorm(length(years), mean = 3000, sd = 100),       # Hypothetical forest area in thousands of square kilometers
+  PopulationDensity = rnorm(length(years), mean = 50, sd = 10)   # Assumed population density in units of people per square kilometer
 )
 
-# 简单的线性模型预测
-# 假设总温室气体排放量每年增加5单位，森林面积每年减少10单位，人口密度每年增加0.3单位
+# Simple linear model prediction
+# Assume that total greenhouse gas emissions increase by 5 units per year, forest area decreases by 10 units per year, and population density increases by 0.3 units per year
 data <- data %>%
   mutate(
     GreenhouseGases = GreenhouseGases + (Year - 2000) * 5,
@@ -22,10 +32,10 @@ data <- data %>%
     PopulationDensity = PopulationDensity + (Year - 2000) * 0.3
   )
 
-# 输出数据
+# Output data
 print(data)
 
-# 可视化
+# visualization
 data %>%
   ggplot(aes(x = Year)) +
   geom_line(aes(y = GreenhouseGases, color = "Greenhouse Gases")) +
