@@ -4,7 +4,7 @@
 # Data: 16 April 2024
 # Contact: dongli.sun@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: Need to know where to get Children Vocabulary Development data.
+# Pre-requisites: Need to know the factors prediction
 # Any other information needed? None.
 
 
