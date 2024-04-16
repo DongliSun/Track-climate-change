@@ -1,8 +1,8 @@
 #### Preamble ####
 # Purpose: Test simulated data.
-# Author: [Your Name]
-# Date: [Current Date]
-# Contact: [Your Contact Information]
+# Author: Author: Dongli Sun
+# Data: 16 April 2024
+# Contact: dongli.sun@mail.utoronto.ca
 # License: MIT
 # Pre-requisites: Create simulated data.
 # Additional Information: None
@@ -12,7 +12,7 @@ library(tidyverse)
 library(testthat)
 
 #### Test data setup ####
-# 创建模拟数据
+# Create simulation data
 set.seed(123)
 simulated_vocab_data <- tibble(
   vocab_word = sample(c("apple", "banana", "cherry"), 100, replace = TRUE),
