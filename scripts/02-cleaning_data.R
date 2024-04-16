@@ -1,3 +1,12 @@
+#### Preamble ####
+# Purpose: To make the data clean and organize
+# Author: Dongli Sun
+# Data: 16 April 2024
+# Contact: dongli.sun@mail.utoronto.ca
+# License: MIT
+# Pre-requisites: get the csv from download_data
+# Any other information needed? None.
+
 #### Workspace setup ####
 library(tidyverse)
 
@@ -7,21 +16,20 @@ ghg_data <- read_csv("ghg_emissions_sum_2000_2020.csv")
 population_density_data <- read_csv("population_density_average_2000_2020.csv")
 
 #### Clean data ####
-# 清洗森林面积数据
 clean_forest_data <-
   forest_data %>%
   filter(!is.na(total_forest_area)) %>%
   mutate(total_forest_area = as.numeric(total_forest_area)) %>%
   arrange(desc(total_forest_area))
 
-# 清洗温室气体排放数据
+# Clean greenhouse gas emissions data
 clean_ghg_data <-
   ghg_data %>%
   filter(!is.na(total_ghg_emissions)) %>%
   mutate(total_ghg_emissions = as.numeric(total_ghg_emissions)) %>%
   arrange(desc(total_ghg_emissions))
 
-# 清洗人口密度数据
+# Clean population density data
 clean_population_density_data <-
   population_density_data %>%
   filter(!is.na(average_population_density)) %>%
