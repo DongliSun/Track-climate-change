@@ -1,8 +1,8 @@
 #### Preamble ####
 # Purpose: Model the effects of various factors on climate-related environmental indicators.
-# Author: ChatGPT
-# Date: 17 April 2023
-# Contact: chatgpt@openai.com
+# Author: Dongli Sun
+# Date: 16 April 2024
+# Contact: dongli.sun@mail.utoronto.ca
 # License: MIT
 # Pre-requisites: Simulated data for climate change factors.
 # Any other information needed? None.
