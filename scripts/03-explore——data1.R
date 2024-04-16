@@ -1,9 +1,18 @@
-# 确认数据集的列名
+#### Preamble ####
+# Purpose: To make the data clean and organize
+# Author: Dongli Sun
+# Data: 16 April 2024
+# Contact: dongli.sun@mail.utoronto.ca
+# License: MIT
+# Pre-requisites: get the csv from download_data
+# Any other information needed? None.
+
+# Confirm the column names of the dataset
 print(names(forest_data))
 print(names(ghg_data))
 print(names(population_data))
 
-# 如果列名正确，尝试绘图
+# If the column names are correct, try drawing
 forest_data %>%
   ggplot(aes(x = year, y = total_forest_area)) +
   geom_line() +
