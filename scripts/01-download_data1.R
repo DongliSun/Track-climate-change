@@ -1,3 +1,12 @@
+#### Preamble ####
+# Purpose: Downloads from the data from Worldbank
+# Author: Dongli Sun
+# Data: 16 April 2024
+# Contact: dongli.sun@mail.utoronto.ca
+# License: MIT
+# Pre-requisites: Need to know where to the forst, ghg and population density development data.
+# Any other information needed? None.
+
 #### Workspace setup ####
 library(tidyverse)
 library(WDI)
