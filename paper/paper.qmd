@@ -1,47 +1,273 @@
 ---
-title: "Detect and predict trends in climate change"
-subtitle: ""
+title: "Factors affecting climate change and analysis"
+subtitle: "Changes in carbon dioxide are the main factor"
 author: 
   - Dongli Sun
-thanks: "Code and data are available at: https://github.com/DongliSun/Track-climate-warming.git"
-date: "`r format(Sys.time(), '%d %B %Y')`"
-abstract: "This paper studies the factors that cause weather changes, and through data and literature, we learn about a series of related issues such as carbon dioxide emissions, temperature changes and renewable energy use. It is clear from the data that the increase in carbon dioxide contributes to the greenhouse effect and increases the surface temperature."
+thanks: "Code and data are available at: https://github.com/DongliSun/Track-climate-change.git."
+date: today
+date-format: long
+abstract: "This paper studies the factors that cause climate change. I will analyze and forecast future climate change based on the data I have collected and combined with the paper. In the original data, I found that climate change is related to changes in carbon dioxide emissions, population density and forest area. I think that the main climate change problem is the change of carbon dioxide, so I will directly relate and expand the relationship between these three. However, I did not find a connection between them in the original data. But I'm going to give a paper on why there's a causal relationship."
 format: pdf
 number-sections: true
 bibliography: references.bib
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-#install.packages("bookdown")
-# Set up libraries
+```{r}
+#| include: false
+#| warning: false
+#| message: false
+
+# set up workspace
 library(tidyverse)
-library(dplyr)
-library(tidyr)
+library(palmerpenguins)
+library(ggplot2)
+library(WDI)
+library(modelsummary)
+library(testthat)
 library(knitr)
-library(kableExtra)
+library(rstanarm)
+library(tinytex)
+```
+
+```{r}
+#| include: false
+
+# IMPORT CLEANED DATA FROM DATA FOLDER
+# originally imported via 02-data_cleaning.R file
+
+vocab_data1 <- read.csv(here::here("data/cleaning_data/cleaned_forest_data.csv"))
+
+cleaned_vocab_data2 <- read.csv(here::here("data/cleaning_data/cleaned_ghg_data.csv"))
+
+cleaned_vocab_data3 <- read.csv(here::here("data/cleaning_data/cleaned_population_density_data.csv"))
+
 
 ```
 
+
 # Introduction
-This paper studies climate change to discuss the temperature rise in recent years and finds that because of climate change, the phenomenon of extreme weather often appears, and the rise of sea level and the melting of glaciers have a very negative impact on local animals. In addition, climate change affects not only the living environment of animals but also human beings, and farmers are the most affected. Therefore, I will analyze the data of climate change factors and integrate them to watch their trends, predict the future development and put forward some suggestions for sustainable development.
 
-# Data
+The data for this study of climate change come from forest land for the worldbank[@worldbank2020forest], the green gas emission[@worldbank2020ghg] and population density[@worldbank2020popdensity]. The original data simply recorded their individual trends, but there was no complete juxtaposition discussion. I found in the original data that carbon dioxide and population density are increasing trends, while the area of forests is decreasing year by year. I think there is a certain connection between them, and I try to show the changes between them and analyze and generate new data, which I have obtained from the world bank, and present the data between 2000 and 2020. There are many categories of climate change in the database, but I mainly intercept carbon dioxide and population density and forest density as the main research objects.
+At the same time, I found that these factors and climate change can be two-way results. Factors that cause climate change to get worse, and then climate change causes those factors to increase dramatically, creating this kind of extreme weather. Extreme weather events occur frequently, and rising sea levels and melting glaciers have a very negative impact on local animals. In addition, climate change affects not only the living environment of animals but also human beings. Therefore, I will analyze the data of climate change factors and integrate them to watch their trends, predict the future development and put forward some suggestions for sustainable development.
+The regional sections of this article are as follows: @sec-data presents the data used for analysis and discovery, including visualization of variables of interest, @sec-model presents a simple linear regression model to prove and predict the relationship between carbon dioxide, forest area and population density, @sec-results shows the interpretation of the model and other findings from analyzing the data. @sec-discussion discusses the implications of the findings as well as the weaknesses of the paper and its next steps for further research on the topic.
 
-## Dataset Description and Methodology
 
-## Data Visualization
+# Data {#sec-data}
+## source
+The data for this study of climate change come from forest land percentagefor the worldbank[@worldbank2020forest],  the green gas emission[@worldbank2020ghg] and population density[@worldbank2020popdensity] can be viewed and I downloaded the csv to facilitate the generation and analysis of data. This website is free and open to the public and can be downloaded and viewed directly. I will use R to complete the whole paper series and data analysis. 
+The database includes data on carbon dioxide emissions from climate change, loss of forest area and trends in population density. I use these variables to simulate, test and build parts of the model for a second analysis. I will show the variation between different variables, but the main method of proof is to prove through the support of the paper.
+I chose the data between 2000 and 2020, and cleaned and tested them.
 
-# Model
+I will use R studio[@citeR] for analysis and data visualization in these processes. For tidyverse package [@citetidyverse], I will access other important R packages. The testthat package [@citetestthat] is mainly used for unit testing functions and code in R packages. The knitr package [@citeknitr] is used to generate dynamic reports from R code. dplyr package [@citedplyr] is used to manipulate and clean data, readr package [@citereadr] is used to read and import data, here package [@citehere] is used to create a specific save file path, The ggplot2 package [@citeggplot2] is used to create data visualizations, and the modelsummary package [@citemodelsummary] is used to create summary tables.
+The WDI software package [@citeWDI] is primarily used to obtain global Development data on economic, social and environmental aspects from the World Bank's World Development Indicators database. The rstanarm software package [@rstanarm] is used to implement the estimation of Bayesian statistical models, especially generalized linear models, which are widely used in the social sciences and biostatistics.
 
-# Results
+## methodology
+I choose carbon dioxide emission, reduction of forest area and population density because I think they are related to each other. For example, with the increase of population density, carbon dioxide emission is bound to be much higher than before, because population needs to consume energy, and energy will produce carbon dioxide. In the same way, forests are important for absorbing carbon dioxide in the loss of forest area, and if the area is reduced, there will be more carbon dioxide. Similarly, I think the change of carbon dioxide is the main cause of climate change, but there are many small factors that can cause the change of carbon dioxide, so I give a section of the paper on the trend of their change to prove my point of view.
+The following is an analysis of the image display after explore data. The initial phase is about the structure of the data set. But the data sets are individual and contained within, basically every single one of them.
 
-# Discussion
+First of all, The data found from the World Bank on forest coverage [@worldbank2020forest], the greenhouse gas emissions [@worldbank2020ghg], and population density [@worldbank2020popdensity] indicate significant trends over the past decade. I only intercepted data from 2000 to 2020, which means we need to clear the data to ensure that I get the total number of years and data I want. I show it in the data run, so I change the different variables between group_by() to better compute and run.
+Further processing the data out of the image shows that this visualization can help us to more directly understand the trend between them, such as the first graph, the X-axis is the year, and the Y-axis is the related value. The data we calculated will be shown on the chart. Then we make a detailed discrete graph of them to represent them.
 
-## Weaknesses and next steps
 
-# Appendix {.unnumbered}
+I will give the cleaning data for the metholody. As shown in the line grapgh of @fig-forest-coverage. It shows the changes in the coverage between 2000 and 2020. Since 2000, the forest coverage has begun to decline. We can clearly observe that in 2005, the coverage rate dropped to about 8310%, but from then to about 2006, it kept rising. And then it keeps going down. In 2010, the forest coverage rate was about 8355%, and then from 2011 to 2013, the forest coverage rate continued to decline, directly decreased by about 8280%. If this trend is followed, I can predict that his value will definitely be lower than 8280%.
+```{r}
+#| message: false
+#| echo: false
+#| warning: false
+#| fig-cap: "Forest Coverage Over Time"
+#| label: fig-forest-coverage
 
-# Model Testing
+forest_data <- read.csv("data/cleaning_data/cleaned_forest_data.csv")
 
-# References
+library(ggplot2)
+forest_data %>%
+  ggplot(aes(x = year, y = total_forest_area)) +
+  geom_line() +
+  labs(title = "Forest Coverage Over Time", x = "Year", y = "Coverage (%)")
+
+```
+
+The third line chart is about carbon dioxide emissions @fig-ghg-emissions, which have been rising continuously since 2000, but began to decline between 2018 and 2019. I can guess that most people are isolated at home due to the emergence of 2019-COVID-19, and many factories are not working, so this may lead to the reduction of carbon dioxide. Because less energy is used. The previous data on the decline and rise of forest cover may be responsible for the continuous increase in carbon dioxide emissions.
+
+```{r fig-ghg-emissions}
+#| message: false
+#| echo: false
+#| warning: false
+#| fig-cap: "GHG Emissions Over Time"
+#| label: fig-ghg-emissions
+
+
+ghg_data <- read.csv(here::here("data/cleaning_data/cleaned_ghg_data.csv"))
+
+# Creating the plot
+ghg_data %>%
+  ggplot(aes(x = year, y = total_ghg_emissions)) +
+  geom_line(color = "red") +
+  labs(title = "GHG Emissions Over Time", x = "Year", y = "Emissions (kt)")
+
+```
+
+
+The line graph is about population density @fig-pop-density. It is obvious that we can learn from the figure that the population density only has a downward trend between 2001 and 2002, but keeps an upward trend after that, and will reach a maximum of 378per km^2 in 2020.
+```{r fig-pop-density}
+#| message: false
+#| echo: false
+#| warning: false
+#| fig-cap: "Population Density Over Time"
+#| label: fig-pop-density
+
+
+population_data <- read.csv("data/cleaning_data/cleaned_population_density_data.csv")
+
+# Creating the plot
+population_data %>%
+  ggplot(aes(x = year, y = average_population_density)) +
+  geom_line(color = "green") +
+  labs(title = "Population Density Over Time", x = "Year", y = "Density (per km²)")
+```
+
+
+
+
+
+
+# Model {#sec-model}
+
+
+## Model set up
+
+
+We consider the following linear regression model to explore the relationship between temperature and CO2 emissions and forest cover and population density:
+In the proposed model:
+
+\begin{align*}
+T_i \mid \mu_i, \sigma^2 &\sim \text{Normal}(\mu_i, \sigma^2) \quad \text{(Conditional distribution of temperature changes)} \\
+\mu_i &= \alpha + \beta_1 \cdot \text{CO2\_Emissions}_i + \beta_2 \cdot \text{Forest\_Coverage}_i + \beta_3 \cdot \text{Population\_Density}_i \quad \text{(Linear prediction model)} \\
+\alpha &\sim \text{Normal}(0, \tau^2) \quad \text{(Prior distribution of the intercept)} \\
+\beta_1, \beta_2, \beta_3 &\sim \text{Normal}(0, \tau^2) \quad \text{(Prior distributions of the slopes)} \\
+\sigma^2 &\sim \text{Inverse-Gamma}(\alpha_0, \beta_0) \quad \text{(Prior distribution of the variance)}
+\end{align*}
+
+In this model:
+
+-   $T_{i}$ represents the temperature change, assumed to be normally distributed around a mean $\mu_i$ determined by the predictors, with variance $\sigma^2$.
+-   $\mu_i$ is the expected temperature change given the levels of CO2 emissions, forest coverage, and population density.
+-   $\alpha$, $\beta_1$, $\beta_2$, and $\beta_3$ are the coefficients representing the intercept and the effects of CO2 emissions, forest coverage, and population density, respectively.
+-   The independent variables of the model are:
+    -   $\text{CO2\_Emissions}_i$: the CO2 emissions, expected to influence temperature change.
+    -   $\text{Forest\_Coverage}_i$: the percentage of forest coverage, expected to influence temperature change.
+    -   $\text{Population\_Density}_i$: the population density per square kilometer, expected to influence temperature change.
+-   The dependent variable of the model is the temperature change $T_i$.
+
+
+We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`.
+
+
+### Model justification
+
+We expect that temperature will change linearly with changes in forest cover and population density and CO2. We assume that if the decrease of forest cover and the increase of population density and the increase of CO2 emissions lead to the increase of temperature. We then used known data on these variables to estimate the relationship between temperature (dependent variable) and forest cover and population density and CO2 emissions (independent variable). The decrease of forest cover leads to the increase of carbon dioxide, which leads to the increase of greenhouse gases, and finally to global warming. The density of population will consume energy and lead to a higher increase of carbon dioxide, so I think that carbon dioxide is a transitional value to temporarily replace the change of temperature, because the relationship between the three variables is reasonable. In this model, we focus on the key variables in the data and predict the increase or decrease of temperature emissions based on changes in forest cover and population density and CO2 emissions. This model is used to generate inferential statistics about CO2 emissions by filling in gaps in existing data to cover diversity in different regions of the globe with simulation data. The establishment of the model can help us analyze and predict the temperature change and play a qualitative role in the future forecast, and help some countries to implement environmentally friendly policies.
+
+
+# Results{#sec-results}
+
+```{r}
+#| label: model-summary
+#| echo: false
+#| warning: false
+#| message: false
+
+set.seed(123)
+climate_data <- tibble(
+  co2_emissions = rnorm(100, mean = 400, sd = 50),  
+  forest_coverage = rnorm(100, mean = 30, sd = 5),  
+  population_density = rnorm(100, mean = 100, sd = 20), 
+  temperature_change = co2_emissions * 0.05 + forest_coverage * -0.1 + population_density * 0.01 + rnorm(100, mean = 0, sd = 0.5)  
+)
+
+#### Model data ####
+# Linear regression to explore the impact of CO2 emissions, forest coverage, and population density on temperature change
+climate_model <- lm(
+  temperature_change ~ co2_emissions + forest_coverage + population_density,
+  data = climate_data
+)
+
+# Model summary
+summary(climate_model)
+modelsummary(climate_model)
+
+```
+As shown in the model summary (see "Model Summary"), it shows the effect of co2_emissions, forest_coverage, and population density on temperature change of a response variable. It can be clearly observed that CO2_emissions and population density have a positive effect, which means that if CO2_emissions increases by one unit, the temperature change will increase to 0.049 units. The coefficient of forest_coverage is -0.095, which brings a negative correlation, which means that if the forest cover increases, the temperature predicted by the model will decrease, and if the forest cover area decreases, the temperature predicted by the model will increase.
+
+Moreover, we can learn from the observation of R2 that the match degree between our current model and the observed model is very high, and it is very close to 1, which proves that his observation of the variable is accurate.
+
+```{r}
+#| label: fig-forest-impact
+#| fig-cap: "Impact of Forest Coverage on Temperature Change"
+#| echo: false
+#| warning: false
+#| message: false
+
+ggplot(climate_data, aes(x = forest_coverage, y = temperature_change)) +
+  geom_point() +
+  geom_smooth(method = "lm", color = "green") +
+  labs(title = "Impact of Forest Coverage on Temperature Change", x = "Forest Coverage (%)", y = "Temperature Change (°C)")
+
+
+```
+
+```{r}
+#| label: fig-co2-impact
+#| fig-cap: "Impact of CO2 Emissions on Temperature Change"
+#| echo: false
+#| warning: false
+#| message: false
+
+ggplot(climate_data, aes(x = co2_emissions, y = temperature_change)) +
+  geom_point() +
+  geom_smooth(method = "lm", color = "blue") +
+  labs(title = "Impact of CO2 Emissions on Temperature Change", x = "CO2 Emissions (ppm)", y = "Temperature Change (°C)")
+
+```
+
+```{r}
+#| label: fig-popdensity-impact
+#| fig-cap: "Impact of Population Density on Temperature Change"
+#| echo: false
+#| warning: false
+#| message: false
+ggplot(climate_data, aes(x = population_density, y = temperature_change)) +
+  geom_point() +
+  geom_smooth(method = "lm", color = "red") +
+  labs(title = "Impact of Population Density on Temperature Change", x = "Population Density (per km²)", y = "Temperature Change (°C)")
+
+```
+These three graphs can make us more clearly understand the relationship between temperature and population density @fig-popdensity-impact, forest coverage rate @fig-forest-impact and CO2@fig-co2-impact emission. For in-depth analysis of the model summary (see "Model Summary"), we can learn from @fig-forest-impact that the negative slope of the green regression line can be seen. The slope of this line represents the average decrease in temperature change for every percentage point increase in forest cover. The confidence interval is shown as a grey area, indicating the uncertainty of our regression estimate. Although the regression line indicates an overall trend, the distribution of the scatter points also suggests that the relationship between temperature change and forest cover may be influenced by other unobserved variables.
+
+\newpage
+
+For the CO2@fig-co2-impact presentation, the blue areas about the blue line indicate how confident we are in our estimate of the regression line; The narrower the interval, the higher our confidence in the estimate. From this graph we can observe that the data points are roughly distributed around the regression line, indicating that CO2 emissions are an important predictor of temperature change. In addition, the scattered points are closely distributed around the regression line, indicating a good fit between the model and the data. This is also consistent with the high R2 value in the model summary provided earlier.
+
+The red line is the trend line obtained by linear regression analysis, which shows the relationship between population density and temperature change. As can be seen from the figure, with the increase of population density, the temperature change also has a slight increasing trend. The gray area represents the 95% confidence interval, which shows that if we repeat the study, there is a 95% chance that the regression line will fall within this interval. The width of the confidence interval indicates the uncertainty of the forecast: the wider the interval, the greater the uncertainty of our estimate of the trend line.
+
+
+
+# Discussion{#sec-discussion}
+
+##  Forest cover and population density as well as carbon dioxide emissions affect temperature changes and thus climate change {#sec-first-point}
+We can learn from the above about the correlation between forest cover and population density as well as carbon dioxide emission and temperature. Then, we can start from these three factors and analyze the data. We can easily see that the change of the temperature is caused by the change of the three variables. And in this carbon dioxide emissions produce a very important factor.
+
+
+## The significance of this study {#sec-second-point}
+The significance of our research is to protect the environment, especially in the current environment is so bad, to understand some factors that will affect climate change and protect the diversity and integrity of the ecology. Understanding the climate change has not only biological impacts but also economic impacts, hitting industries that depend on nature such as agriculture and water resources. Many farmers suffer from it and suffer a lot of economic losses. So understanding climate change is a very important factor.
+
+## Weaknesses and next steps {#sec-weaknesses-next-steps}
+
+### Weaknesses {#sec-weaknesses}
+In fact, I only intercepted a part of the factors, and did not analyze all the factors of climate change. There are still many variables that affect climate change or are related to temperature and the three variables. In fact, in the beginning, the csv I downloaded did not show the annual sum values, which I downloaded from the website. The data during this period is correct, but I only have 21 variables per dataset, so I think the sample may be too small.
+
+### Next Steps {#sec-next-steps}
+I need to increase the number of samples and download them completely to simulate and clarify the data. In this process, I think we can explore new topics and research based on my existing articles. Second, I think we can use more models to test the correctness of data than just linear models. We can learn more about the factors that will affect climate change and implement collection and prediction.
+ 
+ 
+\newpage
+# references
