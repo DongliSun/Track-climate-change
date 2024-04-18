@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repo provides the reason for climate change and the factors with the CO2 emissions and population density and 
+This repo provides the reason for climate change and the factors with the CO2 emissions and population density and forest coverage. In the process that the tempertuera will built by using model to know the 4 variables relationship.
 
 
 ## File Structure
