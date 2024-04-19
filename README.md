@@ -22,6 +22,6 @@ Aspects of the code were written with the help of ChatGPT. The entire chat histo
 
 ##  Instructions of generate the paper
 1. Click the "Code" button and download the zip.
-2. Open the "scripts folder" to run the 5 part R code - `scripts/00_simulation_data.R', scripts/01_download_data.R`, `scripts/02_cleaning_data.R`, `scripts/03_explore_data.R', scripts/04_test_data.R`, `scripts/05_model_data.R`.
+2. Open the "scripts folder" to run the 6 part R code.
 3. Adjust the code as needed.
 4. Put the resulting data in the `paper/paper.qmd` and render it that will generate the PDF.
